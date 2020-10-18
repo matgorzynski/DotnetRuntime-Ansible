@@ -1,0 +1,4 @@
+
+- name: Run mssql setup script
+  shell:  MSSQL_PID="Developer" MSSQL_SA_PASSWORD="{{sa_password}}" /opt/mssql/bin/mssql-conf -n setup accept-eula
+  register: setup_output

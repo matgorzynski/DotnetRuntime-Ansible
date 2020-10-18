@@ -1,0 +1,31 @@
+---
+- name: Install .Net Core Runtime.
+  hosts: dotnetServers
+  vars_files:
+    - ../env_variables
+  become: yes
+
+  tasks:
+    - name: Install requirement packages to install .NET runtime
+      package:
+        name: "{{ dotnetpackages }}"
+        state: latest
+
+    - name: Download .NET package
+      get_url:
+        url: https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+        dest: /tmp/packages-microsoft-prod.deb
+
+    - name: Install a packages-microsoft-prod.deb package
+      apt:
+        deb: /tmp/packages-microsoft-prod.deb
+    
+    - name: Install .NET runtime
+      apt:         
+        name: "aspnetcore-runtime-3.1"
+        state: present      
+        update_cache: yes
+
+    - name: Remove dependencies that are no longer required
+      apt:
+        autoremove: yes

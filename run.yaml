@@ -1,0 +1,6 @@
+---
+
+- import_playbook: basic/installPackeges.yaml
+- import_playbook: basic/updatePackages.yaml
+- import_playbook: dotnet/install.yaml
+- import_playbook: mssql/install.yaml

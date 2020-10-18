@@ -1,0 +1,11 @@
+---
+- name: Update and upgrade all packages on server
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Update repository and cache on all servers
+      apt: update_cache=yes force_apt_get=yes
+    
+    - name: Upgrade all packages on all servers
+      apt: upgrade=dist force_apt_get=yes

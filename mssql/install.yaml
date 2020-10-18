@@ -1,0 +1,37 @@
+---
+- name: Install Microsoft SQL Server
+  hosts: databaseServers
+  vars_files:
+  - ../vault.yaml
+  become: yes
+
+
+  tasks:
+    - name: Import public key from microsoft site
+      apt_key:
+        url: https://packages.microsoft.com/keys/microsoft.asc
+        state: present
+
+    - name: Install mssql-server repozitory
+      get_url:
+        url: https://packages.microsoft.com/config/ubuntu/18.04/mssql-server-2019.list
+        dest: /etc/apt/sources.list.d/mssql-server.list
+    
+    - name: Update repository
+      apt: update_cache=yes
+
+    - name: Install mssql-server
+      package:
+        name: mssql-server
+        state: latest
+
+    - import_tasks: configurationSqlServer.yaml
+
+    - name: Start mssql-server service
+      service:
+        name: mssql-server
+        state: started
+
+    - name: Remove dependencies that are no longer required
+      apt:
+        autoremove: yes

@@ -1,0 +1,16 @@
+---
+- name: Install packages from env_variables file.
+  hosts: all
+  vars_files:
+    - ../env_variables
+  become: yes
+  
+  tasks:
+    - name: Install basic packages on all servers
+      package:
+        name: "{{ basicpackages }}"
+        state: latest
+    
+    - name: Remove dependencies that are no longer required
+      apt:
+        autoremove: yes
